@@ -31,9 +31,9 @@ class Ship():
     def update(self):
         """update sthe ship movement"""
         #updates the ships center value not rect
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.game_settings.ship_speed_factor
-        if self.moving_left:
+        if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center -= self.game_settings.ship_speed_factor
         
         #updates the ships rect value
