@@ -1,7 +1,9 @@
 import pygame
 import sys
+import game_functions as gf
 from settings import Settings
 from ship import Ship
+
 def load_game():
     """loads the game window"""
     #module needed to run the game
@@ -24,13 +26,7 @@ def load_game():
     while True:
         
         #event loop watching for mouse and keyboard movements
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        #chenges the creen color each loop
-        screen.fill(game_settings.bg_color)
-        #draws ship
-        ship.blitme()
-        #draws the most recent screen with changes
-        pygame.display.flip()
+        gf.check_events(ship)
+        gf.screen_unpdate(screen,game_settings,ship)
+        ship.update()
 load_game()
