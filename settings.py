@@ -6,5 +6,6 @@ class Settings():
         self.screen_height = 800
         self.bg_color = (0,0,250)
         self.caption = "Alien Space","AS"
-
+        self.ship_speed_factor = 1.5
+        
         

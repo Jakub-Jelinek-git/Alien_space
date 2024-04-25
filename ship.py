@@ -2,12 +2,14 @@ import pygame
 
 class Ship():
     """class of a ship"""
-    def __init__(self,screen):
+    def __init__(self,screen, game_settings):
         """initializes the ship and starting position"""
         self.screen = screen
+        self.game_settings = game_settings
 
         #creates the ship from image and its shape (rectangle)
         self.image = pygame.image.load("sprites/Space-Invaders-Ship.bmp")
+
         # Set the size for the image
         DEFAULT_IMAGE_SIZE = (70, 90)
  
@@ -20,15 +22,23 @@ class Ship():
         self.rect.centerx = self.screen_rect.centerx
         self.rect.bottom =  self.screen_rect.bottom
 
+        #stores a decimal value of the ship center/position
+        self.center = float(self.rect.centerx)
+
         #movemnt flags
         self.moving_right = False
         self.moving_left = False
     def update(self):
         """update sthe ship movement"""
+        #updates the ships center value not rect
         if self.moving_right:
-            self.rect.centerx += 1
+            self.center += self.game_settings.ship_speed_factor
         if self.moving_left:
-            self.rect.centerx += -1
+            self.center -= self.game_settings.ship_speed_factor
+        
+        #updates the ships rect value
+        self.rect.centerx = self.center
+        
 
     def blitme(self):
         """draws the ship at its current location"""

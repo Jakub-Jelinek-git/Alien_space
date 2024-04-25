@@ -20,7 +20,7 @@ def load_game():
     pygame.display.set_caption("Alien Space","AS")   
 
     #makes ship
-    ship = Ship(screen) 
+    ship = Ship(screen,game_settings) 
     
     #start the main loop for the game
     while True:
