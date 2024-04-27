@@ -23,19 +23,22 @@ def check_events(ship,screen,game_settings,bullets):
             sys.exit()
         check_key_down_events(event,ship,game_settings,screen,bullets)
         check_key_up_events(event,ship)
+def update_bullets(bullets):
+    bullets.update()
+    #draws bullets
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <=0:
+            bullets.remove(bullet)
 def screen_unpdate(screen, settings, ship, bullets):
     #chenges the creen color each loop
         screen.fill(settings.bg_color)
         #draws ship
         ship.blitme()
-        #draws bullets
         for bullet in bullets.sprites():
-            if bullet.rect.bottom <=0:
-                bullets.remove(bullet)
-            else:
-                bullet.draw_bullet()
-        
+            bullet.draw_bullet()
         #draws the most recent screen with changes
         pygame.display.flip()
+
+        
         
         

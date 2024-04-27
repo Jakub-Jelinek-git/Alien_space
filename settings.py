@@ -4,7 +4,7 @@ class Settings():
         """initialize the game settings"""
         self.screen_width = 1200
         self.screen_height = 800
-        self.bg_color = (250,250,250)
+        self.bg_color = (100,100,100)
         self.caption = "Alien Space","AS"
         self.ship_speed_factor = 1.5
         #bullet settings
