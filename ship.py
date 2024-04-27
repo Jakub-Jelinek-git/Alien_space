@@ -8,7 +8,7 @@ class Ship():
         self.game_settings = game_settings
 
         #creates the ship from image and its shape (rectangle)
-        self.image = pygame.image.load("Alien_space/sprites/Space-Invaders-Ship.bmp")
+        self.image = pygame.image.load("sprites/Space-Invaders-Ship.bmp")
 
         # Set the size for the image
         DEFAULT_IMAGE_SIZE = (70, 90)
