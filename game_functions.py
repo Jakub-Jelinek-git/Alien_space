@@ -30,7 +30,11 @@ def screen_unpdate(screen, settings, ship, bullets):
         ship.blitme()
         #draws bullets
         for bullet in bullets.sprites():
-            bullet.draw_bullet()
+            if bullet.rect.bottom <=0:
+                bullets.remove(bullet)
+            else:
+                bullet.draw_bullet()
+        
         #draws the most recent screen with changes
         pygame.display.flip()
         
