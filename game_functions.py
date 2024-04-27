@@ -8,7 +8,7 @@ def check_key_down_events(event,ship,game_settings,screen,bullets):
             ship.moving_right = True
         if event.key == pygame.K_LEFT:
             ship.moving_left = True
-        if event.key == 32:
+        if event.key == 32 and game_settings.bullets_allowed >= len(bullets)+1:
             new_bullet = Bullet(game_settings,screen,ship)
             bullets.add(new_bullet)
 def check_key_up_events(event, ship):
