@@ -8,11 +8,13 @@ def fire_bullet(event,game_settings,bullets,screen,ship):
         bullets.add(new_bullet)
 def check_key_down_events(event,ship,game_settings,screen,bullets):
     if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_q:
+            sys.exit()
+        elif event.key == pygame.K_RIGHT:
             ship.moving_right = True
-        if event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT:
             ship.moving_left = True
-            fire_bullet(event,game_settings,bullets,screen,ship)
+        fire_bullet(event,game_settings,bullets,screen,ship)
 def check_key_up_events(event, ship):
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_RIGHT:
