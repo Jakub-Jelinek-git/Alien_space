@@ -33,13 +33,14 @@ def update_bullets(bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <=0:
             bullets.remove(bullet)
-def screen_unpdate(screen, settings, ship, bullets):
+def screen_unpdate(screen, settings, ship, bullets,alien):
     #chenges the creen color each loop
         screen.fill(settings.bg_color)
         #draws ship
         ship.blitme()
         for bullet in bullets.sprites():
             bullet.draw_bullet()
+        alien.blitme()
         #draws the most recent screen with changes
         pygame.display.flip()
 

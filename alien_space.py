@@ -4,7 +4,7 @@ import game_functions as gf
 from settings import Settings
 from ship import Ship
 from pygame.sprite import Group
-
+from alien import Alien
 def load_game():
     """loads the game window"""
     #module needed to run the game
@@ -24,7 +24,8 @@ def load_game():
 
     #makes ship
     ship = Ship(screen,game_settings) 
-    
+    # makes alien
+    alien = Alien(game_settings,screen)
     #start the main loop for the game
     while True:
         
@@ -32,6 +33,6 @@ def load_game():
         gf.check_events(ship,screen,game_settings, bullet_group)
         ship.update()
         gf.update_bullets(bullet_group)
-        gf.screen_unpdate(screen,game_settings,ship,bullet_group)
+        gf.screen_unpdate(screen,game_settings,ship,bullet_group,alien)
         
 load_game()
