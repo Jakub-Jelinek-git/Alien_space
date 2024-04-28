@@ -48,17 +48,24 @@ def screen_unpdate(screen, settings, ship, aliens, bullets):
             alien.blitme()
         #draws the most recent screen with changes
         pygame.display.flip()
+def get_number_aliens_x(game_settings, alien_width):
+    """returs the number of aliens possible on the screen"""
+    available_space = game_settings.screen_width - (alien_width * 2)
+    number_aliens_x = int(available_space  / (alien_width * 2))
+    return number_aliens_x
+def create_allien(game_settings,screen,aliens,alien_number):
+    alien = Alien(game_settings, screen)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.centerx = alien.x
+    aliens.add(alien)
 def create_alien_fleet(screen, game_settings, aliens):
     """creates a fleet of aliens based on screen width"""
-    alien = Alien(game_settings,screen)     
-    alien_width = alien.rect.width
-    available_space = game_settings.screen_width - (alien_width * 2)
-    number_aliens = int(available_space  / (alien_width * 2))
-    for alien_number in range(number_aliens):
-        alien = Alien(game_settings, screen)
-        alien.x = alien_width + 2 * alien_width * alien_number
-        alien.rect.centerx = alien.x
-        aliens.add(alien)
+    alien = Alien(game_settings, screen)
+    number_aliens_x = get_number_aliens_x(game_settings,alien.rect.width)
+    for alien_number in range(number_aliens_x):
+        create_allien(game_settings,screen,aliens,alien_number)
+        
 
 
 

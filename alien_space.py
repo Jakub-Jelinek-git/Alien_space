@@ -27,7 +27,7 @@ def load_game():
     #makes ship
     ship = Ship(screen,game_settings) 
     #create a fleet
-    gf.create_alien_fleet(screen, game_settings,alien_group)
+    gf.create_alien_fleet(screen,game_settings,alien_group)
     #start the main loop for the game
     while True:
         #event loop watching for mouse and keyboard movements
