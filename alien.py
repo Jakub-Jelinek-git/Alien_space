@@ -8,7 +8,7 @@ class Alien(Sprite):
         super().__init__()
         self.settings = game_settings
         self.screen = screen
-        DEFAULT_IMAGE_SIZE = (70, 70)
+        DEFAULT_IMAGE_SIZE = (70, 60)
  
         # Scale the image to your needed size
         

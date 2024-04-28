@@ -3,6 +3,7 @@ import sys
 import pygame
 from alien import Alien
 from bullet import Bullet
+from ship import Ship
 def fire_bullet(event,game_settings,bullets,screen,ship):
     if event.key == 32 and game_settings.bullets_allowed >= len(bullets)+1:
         new_bullet = Bullet(game_settings,screen,ship)
@@ -53,18 +54,27 @@ def get_number_aliens_x(game_settings, alien_width):
     available_space = game_settings.screen_width - (alien_width * 2)
     number_aliens_x = int(available_space  / (alien_width * 2))
     return number_aliens_x
-def create_allien(game_settings,screen,aliens,alien_number):
+def get_number_rows_y(game_settings,alien_height,ship_height):
+    """returns the number of rows possible on thi spage"""
+    space_available = (game_settings.screen_height - 
+                        (alien_height * 3) - ship_height)
+    number_of_rows = int(space_available / (alien_height * 2))
+    return number_of_rows 
+def create_allien(game_settings,screen,aliens,alien_number, rows_number):
     alien = Alien(game_settings, screen)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
+    alien.rect.y = alien.rect.height + 2 * alien.rect.height * rows_number 
     alien.rect.centerx = alien.x
     aliens.add(alien)
-def create_alien_fleet(screen, game_settings, aliens):
+def create_alien_fleet(screen, game_settings, aliens, ship):
     """creates a fleet of aliens based on screen width"""
     alien = Alien(game_settings, screen)
     number_aliens_x = get_number_aliens_x(game_settings,alien.rect.width)
-    for alien_number in range(number_aliens_x):
-        create_allien(game_settings,screen,aliens,alien_number)
+    number_of_rows = get_number_rows_y(game_settings,alien.rect.height,ship.rect.height)
+    for row in range(number_of_rows):
+        for alien_number in range(number_aliens_x):
+            create_allien(game_settings,screen,aliens,alien_number,row)
         
 
 
