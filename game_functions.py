@@ -33,12 +33,13 @@ def check_events(ship,screen,game_settings,bullets):
         check_key_down_events(event,ship,game_settings,screen,bullets)
         check_key_up_events(event,ship)
 
-def update_bullets(bullets):
+def update_bullets(bullets, aliens):
     bullets.update()
     #updates bullet pos bullets
     for bullet in bullets.copy():
         if bullet.rect.bottom <=0:
             bullets.remove(bullet)
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
 def draw_bullets(bullets):
 
     for bullet in bullets.sprites():
@@ -49,7 +50,6 @@ def screen_unpdate(screen, settings, ship, aliens, bullets):
         screen.fill(settings.bg_color)
         #draws ship
         ship.blitme()
-        update_bullets(bullets)
         draw_bullets(bullets)
         for alien in aliens:
             alien.blitme()
