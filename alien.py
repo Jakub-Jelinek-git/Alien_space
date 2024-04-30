@@ -1,3 +1,4 @@
+
 import pygame
 from pygame.sprite import Sprite
 
@@ -22,6 +23,18 @@ class Alien(Sprite):
 
         self.x = float(self.rect.centerx)
 
+    def update(self):
+        """updates the alien postion"""
+        self.x += self.settings.alien_speed_factor * self.settings.alien_direction
+        self.rect.centerx = self.x
+
+    def check_edges(self):
+        screen_rect = self.screen.get_rect()
+        if self.rect.left <= 0:
+            return True
+        elif self.rect.right >= screen_rect.right:
+            return True
+         
     def blitme(self):
         """draws the alien on the screen"""
         self.screen.blit(self.image, self.rect)
