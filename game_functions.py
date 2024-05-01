@@ -5,12 +5,12 @@ from alien import Alien
 from bullet import Bullet
 from time import sleep
 
-def fire_bullet(event,g_settings,bullets,screen,ship):
-    if event.key == 32 and g_settings.bullets_allowed >= len(bullets)+1:
+def fire_bullet(event,g_settings,bullets,screen,ship,stats):
+    if event.key == 32 and g_settings.bullets_allowed >= len(bullets)+1 and stats.game_active:
         new_bullet = Bullet(g_settings,screen,ship)
         bullets.add(new_bullet)
 
-def check_key_down_events(event,ship,g_settings,screen,bullets):
+def check_key_down_events(event,ship,g_settings,screen,bullets,stats):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_q:
             sys.exit()
@@ -18,7 +18,7 @@ def check_key_down_events(event,ship,g_settings,screen,bullets):
             ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             ship.moving_left = True
-        fire_bullet(event,g_settings,bullets,screen,ship)
+        fire_bullet(event,g_settings,bullets,screen,ship,stats)
 
 def check_key_up_events(event, ship):
     if event.type == pygame.KEYUP:
@@ -27,11 +27,11 @@ def check_key_up_events(event, ship):
         if event.key == pygame.K_LEFT:
             ship.moving_left = False
 
-def check_events(ship,screen,g_settings,bullets):
+def check_events(ship,screen,g_settings,bullets,stats):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        check_key_down_events(event,ship,g_settings,screen,bullets)
+        check_key_down_events(event,ship,g_settings,screen,bullets,stats)
         check_key_up_events(event,ship)
 
 def update_bullets(bullets, aliens):
