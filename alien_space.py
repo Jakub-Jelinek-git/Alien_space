@@ -10,7 +10,8 @@ def load_game():
     """loads the game window"""
     #module needed to run the game
     pygame.init()
-
+    clock = pygame.time.Clock()
+    FPS = 30
     #initialize the settings
     g_settings = Settings()
 
@@ -47,4 +48,5 @@ def load_game():
                              ship,stats)
         gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
                           stats, play_button)
+        clock.tick(FPS)
 load_game()
