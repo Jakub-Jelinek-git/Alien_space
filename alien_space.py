@@ -4,6 +4,7 @@ from settings import Settings
 from ship import Ship
 from pygame.sprite import Group
 from game_stats import GameStats
+from button import Button
 
 def load_game():
     """loads the game window"""
@@ -17,13 +18,16 @@ def load_game():
     stats = GameStats(g_settings)
 
     #sets the creen size
-    screen = pygame.display.set_mode((g_settings.screen_width,
+    screen = pygame.display.set_mode((g_settings.screen_width, 
                                       g_settings.screen_height))
     #creates a group to store bullets
     bullet_group = Group()
 
     #creates a group of aliens
     alien_group = Group()
+    
+    # Make the Play button.
+    play_button = Button(g_settings, screen, "Play")
 
     #shows the title on top of the screen
     pygame.display.set_caption("Alien Space","AS")   
@@ -35,10 +39,12 @@ def load_game():
     #start the main loop for the game
     while True:
         #event loop watching for mouse and keyboard movements
-        gf.check_events(ship,screen,g_settings, bullet_group,stats)
+        gf.check_events(ship,screen,g_settings, bullet_group,stats,play_button)
         if stats.game_active:
             ship.update()
             gf.update_bullets(bullet_group, alien_group)
-            gf.update_aliens(alien_group,g_settings,bullet_group,screen,ship,stats)
-        gf.screen_unpdate(screen,g_settings,ship,alien_group,bullet_group)
+            gf.update_aliens(alien_group,g_settings,bullet_group,screen,
+                             ship,stats)
+        gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
+                          stats, play_button)
 load_game()

@@ -16,7 +16,7 @@ class Settings():
         self.bullets_allowed = 3
 
 
-        self.alien_speed_factor = 10
+        self.alien_speed_factor = 2
         self.alien_direction = 1
         self.alien_drop_factor = 10
         
