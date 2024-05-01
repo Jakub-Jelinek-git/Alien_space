@@ -36,8 +36,9 @@ def load_game():
     while True:
         #event loop watching for mouse and keyboard movements
         gf.check_events(ship,screen,g_settings, bullet_group)
-        ship.update()
-        gf.update_bullets(bullet_group, alien_group)
-        gf.update_aliens(alien_group,g_settings,bullet_group,screen,ship,stats)
+        if stats.game_active:
+            ship.update()
+            gf.update_bullets(bullet_group, alien_group)
+            gf.update_aliens(alien_group,g_settings,bullet_group,screen,ship,stats)
         gf.screen_unpdate(screen,g_settings,ship,alien_group,bullet_group)
 load_game()
