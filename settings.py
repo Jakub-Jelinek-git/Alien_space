@@ -16,7 +16,7 @@ class Settings():
         #alien bullet
         self.alien_bullet_color = (0,255,255)
         self.alien_bullet_speed = 17
-        
+
         # How quickly the alien point values increase
         self.score_scale = 1.5
         self.alien_drop_factor = 10
@@ -44,6 +44,6 @@ class Settings():
         """Increase speed settings."""
         self.ship_speed_factor *= self.speedup_scale
         self.alien_speed_factor *= self.speedup_scale
-        self.alien_bullet_speed *= self.speedup_scale
+        
         self.alien_points = int(self.score_scale * self.alien_points)
         print(self.alien_points)
