@@ -1,5 +1,6 @@
 """all the functionality of the game"""
 import sys
+from threading import stack_size
 import pygame
 from alien import Alien
 from bullet import Bullet
@@ -43,18 +44,23 @@ def check_events(ship,screen,g_settings,bullets,stats,play_button,aliens):
                               play_button,aliens)
         check_key_up_events(event,ship)
 
-def update_bullets(bullets, aliens,g_settings,screen,ship):
+def update_bullets(bullets, aliens,g_settings,screen,ship,stats,sb):
     bullets.update()
     #updates bullet pos bullets
     for bullet in bullets.copy():
         if bullet.rect.bottom <=0:
             bullets.remove(bullet)
-    check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets)
-def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets):
+    check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets,stats,
+                                  sb)
+def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
+                                  stats,sb):
     """Respond to bullet-alien collisions."""
     # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
-  
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += g_settings.alien_points * len(aliens)
+        sb.prep_score()
     if len(aliens) == 0:
         # Destroy existing bullets, create new fleet and speed up the game.
         bullets.empty()
