@@ -67,7 +67,7 @@ def draw_bullets(bullets):
          bullet.draw_bullet()
 
 def screen_unpdate(screen, g_settings, ship, aliens, bullets, stats, 
-                   play_button):
+                   play_button, sb):
     #chenges the creen color each loop
         screen.fill(g_settings.bg_color)
         #draws ship
@@ -75,6 +75,7 @@ def screen_unpdate(screen, g_settings, ship, aliens, bullets, stats,
         draw_bullets(bullets)
         for alien in aliens:
             alien.blitme()
+        sb.show_score()
          # Draw the play button if the game is inactive.
         if not stats.game_active:
             play_button.draw_button()

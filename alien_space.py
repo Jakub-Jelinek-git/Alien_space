@@ -1,3 +1,4 @@
+import stat
 import pygame
 import game_functions as gf
 from settings import Settings
@@ -5,6 +6,7 @@ from ship import Ship
 from pygame.sprite import Group
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 def load_game():
     """loads the game window"""
@@ -15,6 +17,7 @@ def load_game():
     #initialize the settings
     g_settings = Settings()
 
+    
     #creates an instanse of stats
     stats = GameStats(g_settings)
 
@@ -32,6 +35,8 @@ def load_game():
 
     #shows the title on top of the screen
     pygame.display.set_caption("Alien Space","AS")   
+    # create a scoreboard
+    sb = Scoreboard(g_settings,screen,stats)
 
     #makes ship
     ship = Ship(screen,g_settings) 
@@ -48,6 +53,6 @@ def load_game():
             gf.update_aliens(alien_group,g_settings,bullet_group,screen,
                              ship,stats)
         gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
-                          stats, play_button)
+                          stats, play_button,sb)
         clock.tick(FPS)
 load_game()
