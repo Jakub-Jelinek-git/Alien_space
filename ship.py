@@ -13,7 +13,7 @@ class Ship(Sprite):
         self.image = pygame.image.load("sprites/Space-Invaders-Ship.bmp")
 
         # Set the size for the image
-        DEFAULT_IMAGE_SIZE = (70, 90)
+        DEFAULT_IMAGE_SIZE = (55, 70)
  
         # Scale the image to your needed size
         self.image = pygame.transform.scale(self.image, DEFAULT_IMAGE_SIZE)

@@ -124,15 +124,15 @@ def create_alien_fleet(screen, g_settings, aliens, ship):
         for alien_number in range(number_aliens_x):
             create_allien(g_settings,screen,aliens,alien_number,row)
 
-def update_aliens(aliens,g_settings,bullets,screen,ship,stats):
+def update_aliens(aliens,g_settings,bullets,screen,ship,stats,sb):
     """Update the postions of all aliens in the fleet."""
     fleet_check_edges(aliens,g_settings)
     aliens.update()
     # Look for alien-ship collisions.
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(g_settings,stats,screen,ship,aliens,bullets)
+        ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb)
         print("Ship hit!!!")
-    check_aliens_bottom(g_settings,stats,screen,ship,aliens,bullets)
+    check_aliens_bottom(g_settings,stats,screen,ship,aliens,bullets,sb)
 
 
 
@@ -147,11 +147,13 @@ def change_fleet_direction(aliens, g_settings):
         alien.rect.y += g_settings.alien_drop_factor
     g_settings.alien_direction *= -1
 
-def ship_hit(g_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(g_settings, stats, screen, ship, aliens, bullets,sb):
     """Respond to ship being hit by alien."""
     # Decrement ships_left.
     if stats.ships_left > 1:
         stats.ships_left -= 1
+        # Update scoreboard.
+        sb.prep_ships()
         # Empty the list of aliens and bullets.
         aliens.empty()
         bullets.empty()
@@ -164,13 +166,13 @@ def ship_hit(g_settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
-def check_aliens_bottom(g_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(g_settings, stats, screen, ship, aliens, bullets,sb):
     """Check if any aliens have reached the bottom of the screen."""
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             #same as if the ship got hit.
-            ship_hit(g_settings, stats, screen, ship, aliens, bullets)
+            ship_hit(g_settings, stats, screen, ship, aliens, bullets,sb)
             break       
 def check_play_button(stats, play_button, mouse_x, mouse_y, g_settings,aliens,
                       bullets,screen,ship,sb):
@@ -196,6 +198,7 @@ def start_game(stats,aliens,bullets,ship,screen,g_settings,sb):
     sb.prep_score()
     sb.prep_high_score()
     sb.prep_level()
+    sb.prep_ships()
 
 
 def check_high_score(stats, sb):

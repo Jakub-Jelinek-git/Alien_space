@@ -52,7 +52,7 @@ def load_game():
             gf.update_bullets(bullet_group, alien_group,g_settings,screen,ship,
                               stats,sb)
             gf.update_aliens(alien_group,g_settings,bullet_group,screen,
-                             ship,stats)
+                             ship,stats,sb)
         gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
                           stats, play_button,sb)
         clock.tick(FPS)
