@@ -18,7 +18,11 @@ def check_key_down_events(event,ship,g_settings,screen,bullets,stats,play_button
             ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             ship.moving_left = True
+        elif (event.key == pygame.K_p) and not (stats.game_active):
+            start_game(stats,aliens,bullets,ship,screen,g_settings)
         fire_bullet(event,g_settings,bullets,screen,ship,stats)
+        
+
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_x, mouse_y = pygame.mouse.get_pos()
         check_play_button(stats, play_button, mouse_x, mouse_y,g_settings,
@@ -154,7 +158,10 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, g_settings,aliens,
     """Start a new game when the player clicks Play."""
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
-        # Hide the mouse cursor.
+        start_game(stats,aliens,bullets,ship,screen,g_settings)
+
+def start_game(stats,aliens,bullets,ship,screen,g_settings):
+    # Hide the mouse cursor.
         pygame.mouse.set_visible(False)
         # Reset the game statistics.
         stats.reset_stats()
@@ -165,7 +172,6 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, g_settings,aliens,
         # Create a new fleet and center the ship.
         create_alien_fleet(screen,g_settings,   aliens,ship,)
         ship.center_ship()
-
 
 
         
