@@ -1,15 +1,20 @@
 """all the functionality of the game"""
 import sys
-from threading import stack_size
 import pygame
 from alien import Alien
-from bullet import Bullet
+from bullet import Bullet,AlienBullet
 from time import sleep
+import random
 
 def fire_bullet(event,g_settings,bullets,screen,ship,stats):
     if event.key == 32 and g_settings.bullets_allowed >= len(bullets)+1 and stats.game_active:
         new_bullet = Bullet(g_settings,screen,ship)
         bullets.add(new_bullet)
+
+def fire_alien_bullet(g_settings,screen,ship,a_bullets):
+    new_bullet = AlienBullet(g_settings,screen,ship)
+    a_bullets.add(new_bullet)
+    
 
 def check_key_down_events(event,ship,g_settings,screen,bullets,stats,play_button,aliens,sb):
     if event.type == pygame.KEYDOWN:
@@ -44,16 +49,26 @@ def check_events(ship,screen,g_settings,bullets,stats,play_button,aliens,sb):
                               play_button,aliens,sb)
         check_key_up_events(event,ship)
 
-def update_bullets(bullets, aliens,g_settings,screen,ship,stats,sb):
+def update_bullets(bullets, aliens,g_settings,screen,ship,stats,sb,a_bullets):
     bullets.update()
+    a_bullets.update()
+    screen_height = g_settings.screen_height
     #updates bullet pos bullets
     for bullet in bullets.copy():
         if bullet.rect.bottom <=0:
             bullets.remove(bullet)
+    for bullet in a_bullets.copy():
+        if bullet.rect.top <= screen_height:
+            a_bullets.remove(bullet)
     check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets,stats,
                                   sb)
+    check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb)
+def check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb):
+    if pygame.sprite.spritecollideany(ship,a_bullets):
+        ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb)
 def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
                                   stats,sb):
+    
     """Respond to bullet-alien collisions."""
     # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
@@ -73,17 +88,19 @@ def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
 
 
 def draw_bullets(bullets):
-
     for bullet in bullets.sprites():
          bullet.draw_bullet()
+   
 
 def screen_unpdate(screen, g_settings, ship, aliens, bullets, stats, 
-                   play_button, sb):
+                   play_button, sb,a_bullets):
     #chenges the creen color each loop
         screen.fill(g_settings.bg_color)
         #draws ship
         ship.blitme()
         draw_bullets(bullets)
+        for bullet in a_bullets.sprites():
+            bullet.draw_bullet()
         for alien in aliens:
             alien.blitme()
         sb.show_score()
@@ -124,11 +141,16 @@ def create_alien_fleet(screen, g_settings, aliens, ship):
         for alien_number in range(number_aliens_x):
             create_allien(g_settings,screen,aliens,alien_number,row)
 
-def update_aliens(aliens,g_settings,bullets,screen,ship,stats,sb):
+def update_aliens(aliens,g_settings,bullets,screen,ship,stats,sb,a_bullets):
     """Update the postions of all aliens in the fleet."""
     fleet_check_edges(aliens,g_settings)
     aliens.update()
     # Look for alien-ship collisions.
+    num = random.randint(1,g_settings.randomness)
+    print(num)
+    if num == 1:
+        
+        fire_alien_bullet(g_settings,screen,ship,a_bullets)
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb)
         print("Ship hit!!!")
@@ -150,7 +172,7 @@ def change_fleet_direction(aliens, g_settings):
 def ship_hit(g_settings, stats, screen, ship, aliens, bullets,sb):
     """Respond to ship being hit by alien."""
     # Decrement ships_left.
-    if stats.ships_left > 1:
+    if stats.ships_left > 0:
         stats.ships_left -= 1
         # Update scoreboard.
         sb.prep_ships()

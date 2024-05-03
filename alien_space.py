@@ -27,6 +27,9 @@ def load_game():
     #creates a group to store bullets
     bullet_group = Group()
 
+    #alien bullet group
+    a_bullet_group = Group()
+
     #creates a group of aliens
     alien_group = Group()
     
@@ -50,10 +53,10 @@ def load_game():
         if stats.game_active:
             ship.update()
             gf.update_bullets(bullet_group, alien_group,g_settings,screen,ship,
-                              stats,sb)
+                              stats,sb,a_bullet_group)
             gf.update_aliens(alien_group,g_settings,bullet_group,screen,
-                             ship,stats,sb)
+                             ship,stats,sb,a_bullet_group)
         gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
-                          stats, play_button,sb)
+                          stats, play_button,sb,a_bullet_group)
         clock.tick(FPS)
 load_game()
