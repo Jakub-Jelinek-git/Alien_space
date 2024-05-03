@@ -29,6 +29,7 @@ class Bullet(Sprite):
 class AlienBullet(Sprite):
     def __init__(self, game_settings, screen, alien):
         super().__init__()
+        print("new bullets")
         self.screen = screen
         self.rect = pygame.Rect(0,0,game_settings.bullet_width,game_settings.bullet_height)
         self.rect.centerx = alien.rect.centerx
@@ -46,3 +47,4 @@ class AlienBullet(Sprite):
     def draw_bullet(self):
         """draws the bullet to the screen"""
         pygame.draw.rect(self.screen,self.color,self.rect)
+        

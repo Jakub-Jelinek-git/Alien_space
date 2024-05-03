@@ -14,7 +14,7 @@ class Settings():
         self.bullets_allowed = 3
 
         #alien bullet
-        self.alien_bullet_color = (0,200,0)
+        self.alien_bullet_color = (0,255,255)
 
         # How quickly the alien point values increase
         self.score_scale = 1.5
