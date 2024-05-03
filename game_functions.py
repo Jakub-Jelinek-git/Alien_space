@@ -43,13 +43,24 @@ def check_events(ship,screen,g_settings,bullets,stats,play_button,aliens):
                               play_button,aliens)
         check_key_up_events(event,ship)
 
-def update_bullets(bullets, aliens):
+def update_bullets(bullets, aliens,g_settings,screen,ship):
     bullets.update()
     #updates bullet pos bullets
     for bullet in bullets.copy():
         if bullet.rect.bottom <=0:
             bullets.remove(bullet)
+    check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets)
+def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets):
+    """Respond to bullet-alien collisions."""
+    # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+  
+    if len(aliens) == 0:
+        # Destroy existing bullets, create new fleet and speed up the game.
+        bullets.empty()
+        g_settings.increase_speed()
+        create_alien_fleet(screen,g_settings,aliens,ship)
+
 def draw_bullets(bullets):
 
     for bullet in bullets.sprites():
@@ -105,10 +116,6 @@ def update_aliens(aliens,g_settings,bullets,screen,ship,stats):
     """Update the postions of all aliens in the fleet."""
     fleet_check_edges(aliens,g_settings)
     aliens.update()
-    if len(aliens) == 0:
-        # Destroy existing bullets and create new fleet.
-        bullets.empty()
-        create_alien_fleet(screen, g_settings, aliens,ship,)
     # Look for alien-ship collisions.
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(g_settings,stats,screen,ship,aliens,bullets)
@@ -161,19 +168,20 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, g_settings,aliens,
         start_game(stats,aliens,bullets,ship,screen,g_settings)
 
 def start_game(stats,aliens,bullets,ship,screen,g_settings):
+    g_settings.initialize_dynamic_settings()
     # Hide the mouse cursor.
-        pygame.mouse.set_visible(False)
-        # Reset the game statistics.
-        stats.reset_stats()
-        stats.game_active = True
-        # Empty the list of aliens and bullets.
-        aliens.empty()
-        bullets.empty()
-        # Create a new fleet and center the ship.
-        create_alien_fleet(screen,g_settings,   aliens,ship,)
-        ship.center_ship()
+    pygame.mouse.set_visible(False)
+    # Reset the game statistics.
+    stats.reset_stats()
+    stats.game_active = True
+    # Empty the list of aliens and bullets.
+    aliens.empty()
+    bullets.empty()
+    # Create a new fleet and center the ship.
+    create_alien_fleet(screen,g_settings,   aliens,ship,)
+    ship.center_ship()
 
 
-        
-        
-        
+    
+    
+    

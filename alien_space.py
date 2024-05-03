@@ -44,7 +44,7 @@ def load_game():
                         alien_group)
         if stats.game_active:
             ship.update()
-            gf.update_bullets(bullet_group, alien_group)
+            gf.update_bullets(bullet_group, alien_group,g_settings,screen,ship)
             gf.update_aliens(alien_group,g_settings,bullet_group,screen,
                              ship,stats)
         gf.screen_unpdate(screen, g_settings, ship, alien_group, bullet_group, 
