@@ -12,10 +12,11 @@ class Settings():
         self.bullet_height = 15
         self.bullet_color =  (255,255,255)
         self.bullets_allowed = 3
-
+        
         #alien bullet
         self.alien_bullet_color = (0,255,255)
-
+        self.alien_bullet_speed = 17
+        
         # How quickly the alien point values increase
         self.score_scale = 1.5
         self.alien_drop_factor = 10
@@ -34,7 +35,7 @@ class Settings():
         # fleet_direction of 1 represents right; -1 represents left.
         self.alien_direction = 1
         self.alien_speed_factor = 5
-        self.alien_bullet_speed = 17
+        
         self.randomness = 1
         #score
         self.alien_points = 50
