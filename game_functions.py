@@ -60,12 +60,14 @@ def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
     if collisions:
         for aliens in collisions.values():
             stats.score += g_settings.alien_points * len(aliens)
-        sb.prep_score()
+            sb.prep_score()
+        check_high_score(stats, sb)
     if len(aliens) == 0:
         # Destroy existing bullets, create new fleet and speed up the game.
         bullets.empty()
         g_settings.increase_speed()
         create_alien_fleet(screen,g_settings,aliens,ship)
+
 
 def draw_bullets(bullets):
 
@@ -187,6 +189,12 @@ def start_game(stats,aliens,bullets,ship,screen,g_settings):
     # Create a new fleet and center the ship.
     create_alien_fleet(screen,g_settings,   aliens,ship,)
     ship.center_ship()
+
+def check_high_score(stats, sb):
+    """Check to see if there's a new high score."""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()
 
 
     
