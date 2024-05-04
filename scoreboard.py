@@ -1,7 +1,7 @@
 import pygame.font
 from pygame.sprite import Group
 from ship import Ship
-
+import json
 class Scoreboard():
     """simple scrore board for the game"""
     def __init__(self,g_settings,screen,stats):
@@ -10,22 +10,45 @@ class Scoreboard():
         self.screen_rect = screen.get_rect()
         self.g_settings = g_settings
         self.stats = stats
-
+        self.high_score = stats.high_score
         # Font settings for scoring information.
         self.text_color = (30, 30, 30)
         self.font = pygame.font.SysFont(None, 48)
-
+        
         # Prepare the initial score image.
         self.prep_score()
-        self.prep_high_score()
+        self.h_s()
+        self.prep_high_score(stats)
         self.prep_level()
         self.prep_ships()
+    def h_s(self):
+        self.filename = 'high_score.json'
+        print(self.high_score)
+        hso = 0
+        try:
+            with open(self.filename) as f_obj:
+                hso = json.load(f_obj)
+                if hso > self.high_score:
+                    self.high_score = int(round(hso,-1))
+                else:
+                    self.high_score = int(round(self.stats.high_score, -1))
+        except FileNotFoundError:
+            with open(self.filename, 'w') as f_obj:
+                self.high_score = int(round(self.stats.high_score, -1))
+                json.dump(self.high_score, f_obj)
+        if hso < self.high_score:
+            with open(self.filename, 'w') as f_obj:
+                json.dump(self.high_score, f_obj)
+            
+    
 
-    def prep_high_score(self):
+    def prep_high_score(self,stats):
         """Turn the high score into a rendered image."""
-        high_score = int(round(self.stats.high_score, -1))
-        high_score_str = "{:,}".format(high_score)
-        self.high_score_image = self.font.render(high_score_str, True,
+        
+        if self.high_score < stats.score:
+            self.high_score = stats.score
+        self.high_score_str = "{:,}".format(self.high_score)
+        self.high_score_image = self.font.render(self.high_score_str, True,
             self.text_color, self.g_settings.bg_color)
         # Center the high score at the top of the screen.
         self.high_score_rect = self.high_score_image.get_rect()

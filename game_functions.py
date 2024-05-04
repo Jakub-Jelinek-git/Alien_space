@@ -37,13 +37,12 @@ def fire_bullet(event,g_settings,bullets,screen,ship,stats):
     if event.key == 32 and g_settings.bullets_allowed >= len(bullets)+1 and stats.game_active:
         new_bullet = Bullet(g_settings,screen,ship)
         bullets.add(new_bullet)
-
-
     
 
 def check_key_down_events(event,ship,g_settings,screen,bullets,stats,play_button,aliens,sb,a_bullets):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_q:
+            sb.h_s()
             sys.exit()
         elif event.key == pygame.K_RIGHT:
             ship.moving_right = True
@@ -68,6 +67,7 @@ def check_key_up_events(event, ship):
 def check_events(ship,screen,g_settings,bullets,stats,play_button,aliens,sb,a_bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            sb.h_s()
             sys.exit()
         check_key_down_events(event,ship,g_settings,screen,bullets,stats,
                               play_button,aliens,sb,a_bullets)
@@ -155,7 +155,6 @@ def update_aliens(aliens,g_settings,bullets,screen,ship,stats,sb,a_bullets):
     # Look for alien-ship collisions.
     for alien in aliens.sprites():
         num = random.randint(1,int(g_settings.randomness*(1+((28-len(aliens))/100))))
-        print(num)
         if num == 1:
             fire_alien_bullet(g_settings,screen,alien,a_bullets)
     if pygame.sprite.spritecollideany(ship, aliens):
@@ -226,8 +225,10 @@ def start_game(stats,aliens,bullets,ship,screen,g_settings,sb,a_bullets):
     create_alien_fleet(screen,g_settings,   aliens,ship,)
     ship.center_ship()
     # Reset the scoreboard images.
+    
     sb.prep_score()
-    sb.prep_high_score()
+    sb.h_s()
+    sb.prep_high_score(stats)
     sb.prep_level()
     sb.prep_ships()
 
@@ -236,7 +237,7 @@ def check_high_score(stats, sb):
     """Check to see if there's a new high score."""
     if stats.score > stats.high_score:
         stats.high_score = stats.score
-        sb.prep_high_score()
+        sb.prep_high_score(stats)
 
 
     
