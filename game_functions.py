@@ -6,14 +6,39 @@ from bullet import Bullet,AlienBullet
 from time import sleep
 import random
 
+def update_bullets(bullets, aliens,g_settings,screen,ship,stats,sb,a_bullets):
+    bullets.update()
+    a_bullets.update()
+    screen_height = g_settings.screen_height
+    #updates bullet pos bullets
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <=0:
+            bullets.remove(bullet)
+    for bullet in a_bullets.copy():
+        if bullet.rect.top >= screen_height:
+            a_bullets.remove(bullet)
+    check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets,stats,
+                                  sb)
+    check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb)
+
+def check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb):
+    if pygame.sprite.spritecollideany(ship,a_bullets):
+        ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb,a_bullets)
+
+def draw_alien_bullets(a_bullets):
+    for bullet in a_bullets.sprites():
+            bullet.draw_bullet()
+
+def fire_alien_bullet(g_settings,screen,alien,a_bullets):
+    new_bullet = AlienBullet(g_settings,screen,alien)
+    a_bullets.add(new_bullet)
+
 def fire_bullet(event,g_settings,bullets,screen,ship,stats):
     if event.key == 32 and g_settings.bullets_allowed >= len(bullets)+1 and stats.game_active:
         new_bullet = Bullet(g_settings,screen,ship)
         bullets.add(new_bullet)
 
-def fire_alien_bullet(g_settings,screen,ship,a_bullets):
-    new_bullet = AlienBullet(g_settings,screen,ship)
-    a_bullets.add(new_bullet)
+
     
 
 def check_key_down_events(event,ship,g_settings,screen,bullets,stats,play_button,aliens,sb,a_bullets):
@@ -48,24 +73,8 @@ def check_events(ship,screen,g_settings,bullets,stats,play_button,aliens,sb,a_bu
                               play_button,aliens,sb,a_bullets)
         check_key_up_events(event,ship)
 
-def update_bullets(bullets, aliens,g_settings,screen,ship,stats,sb,a_bullets):
-    bullets.update()
-    a_bullets.update()
-    screen_height = g_settings.screen_height
-    #updates bullet pos bullets
-    print(len(a_bullets))
-    for bullet in bullets.copy():
-        if bullet.rect.bottom <=0:
-            bullets.remove(bullet)
-    for bullet in a_bullets.copy():
-        if bullet.rect.top >= screen_height:
-            a_bullets.remove(bullet)
-    check_bullet_alien_collisions(g_settings,screen,ship,aliens,bullets,stats,
-                                  sb)
-    check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb)
-def check_a_bullet_ship_collision(a_bullets,ship,g_settings,stats,screen,aliens,bullets,sb):
-    if pygame.sprite.spritecollideany(ship,a_bullets):
-        ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb)
+
+
 def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
                                   stats,sb):
     
@@ -90,10 +99,7 @@ def check_bullet_alien_collisions(g_settings, screen, ship, aliens, bullets,
 def draw_bullets(bullets):
     for bullet in bullets.sprites():
          bullet.draw_bullet()
-def draw_alien_bullets(a_bullets):
-    for bullet in a_bullets.sprites():
-            bullet.draw_bullet()
-    print("drawing")
+
 def screen_unpdate(screen, g_settings, ship, aliens, bullets, stats, 
                    play_button, sb,a_bullets):
     #chenges the creen color each loop
@@ -147,9 +153,11 @@ def update_aliens(aliens,g_settings,bullets,screen,ship,stats,sb,a_bullets):
     fleet_check_edges(aliens,g_settings)
     aliens.update()
     # Look for alien-ship collisions.
-    num = random.randint(1,g_settings.randomness)
-    if num == 1:
-        fire_alien_bullet(g_settings,screen,ship,a_bullets)
+    for alien in aliens.sprites():
+        num = random.randint(1,int(g_settings.randomness*(1+((28-len(aliens))/100))))
+        print(num)
+        if num == 1:
+            fire_alien_bullet(g_settings,screen,alien,a_bullets)
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(g_settings,stats,screen,ship,aliens,bullets,sb,a_bullets)
         print("Ship hit!!!")
